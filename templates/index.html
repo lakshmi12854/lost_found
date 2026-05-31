@@ -1,21 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Welcome</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found | Home</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
+<body class="bg-gradient-to-br from-slate-50 to-indigo-50 min-h-screen font-sans">
 
-<h2>Welcome to Lost and Found System</h2>
+    <div class="max-w-5xl mx-auto px-4 py-16 sm:py-24 text-center">
+        <div class="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-indigo-100">
+            🔍 Smart Matching Platform
+        </div>
+        <h1 class="text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight max-w-3xl mx-auto leading-tight">
+            Lost Something? <br><span class="text-indigo-600">Find It Here.</span>
+        </h1>
+        <p class="mt-6 text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            A simple, fast, and automated way to report lost items and reconnect with your missing belongings.
+        </p>
 
-<a href="/register">
-    <button>New User? Register</button>
-</a>
+        <div class="mt-10 flex flex-wrap justify-center gap-4">
+            <a href="/login" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition duration-200 transform active:scale-95">
+                Sign In to Account
+            </a>
+            <a href="/register" class="bg-white hover:bg-slate-50 text-slate-800 font-semibold px-8 py-4 rounded-xl shadow-md border border-slate-200 transition duration-200 transform active:scale-95">
+                Create an Account
+            </a>
+        </div>
+    </div>
 
-<br><br>
-
-<a href="/login">
-    <button>Already Registered? Login</button>
-</a>
+    <div class="max-w-5xl mx-auto px-4 pb-24">
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                <div class="text-3xl mb-4">📝</div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Post Reports</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">Quickly add missing items or log things you found along with a contact description and image.</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                <div class="text-3xl mb-4">🤖</div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Smart Matching</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">Our script scans titles and descriptions automatically to determine similarity instantly.</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                <div class="text-3xl mb-4">📩</div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Email Alerts</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">Get automated login updates and direct warnings straight to your mailbox when a match is found.</p>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
