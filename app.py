@@ -6,28 +6,27 @@ from flask_mail import Mail, Message
 from difflib import SequenceMatcher
 
 app = Flask(__name__)
-app.secret_key = "your_secret_key"
+# Uses environment variable if found, otherwise falls back to your string
+app.secret_key = os.environ.get("SECRET_KEY", "your_secret_key")
 
 # ================= MAIL CONFIG =================
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'anjulakshmi48@gmail.com'
-app.config['MAIL_PASSWORD'] = 'nncr ibfd fwxv kevx'
-app.config['MAIL_DEFAULT_SENDER'] = 'anjulakshmi48@gmail.com'
+app.config['MAIL_USERNAME'] = os.environ.get("MAIL_USERNAME", "anjulakshmi48@gmail.com")
+# Using environment variable for security, falling back to your app password
+app.config['MAIL_PASSWORD'] = os.environ.get("MAIL_PASSWORD", "nncr ibfd fwxv kevx")
+app.config['MAIL_DEFAULT_SENDER'] = os.environ.get("MAIL_USERNAME", "anjulakshmi48@gmail.com")
 
 mail = Mail(app)
 
 # ================= UPLOAD =================
-# ✅ FIXED: Vercel requires writing to the temporary /tmp directory 
-# because the default static folder is read-only on their servers.
 UPLOAD_FOLDER = '/tmp'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 # ================= DATABASE =================
 def init_db():
-    # ✅ FIXED: Storing the DB in /tmp guarantees your app has write permissions on Vercel
     conn = sqlite3.connect('/tmp/users.db')   
     cur = conn.cursor()
 
@@ -54,7 +53,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-# ✅ FIXED: Call the initialization function so tables are automatically created on launch!
+# Initialize tables automatically on launch
 init_db()
 
 
