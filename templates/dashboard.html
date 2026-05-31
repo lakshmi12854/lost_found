@@ -1,1 +1,8 @@
-
+<h3>All Stored Items</h3>
+<ul>
+    {% for item in items %}
+        <li><strong>{{ item[1] }}</strong> - {{ item[2] }}</li>
+    {% else %}
+        <li>No items found.</li>
+    {% endfor %}
+</ul>
