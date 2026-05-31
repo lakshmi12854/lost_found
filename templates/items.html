@@ -1,39 +1,71 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>All Items</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Items Gallery | Lost & Found</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
+<body class="bg-slate-50 min-h-screen font-sans">
 
-<h2>Lost Items List</h2>
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-xs">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <h1 class="text-xl font-extrabold text-slate-900">🔍 Lost & Found Panel</h1>
+            <div class="flex items-center gap-3">
+                <a href="/add_item" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm px-4 py-2.5 rounded-lg transition shadow-xs">
+                    + Add New Item
+                </a>
+                <a href="/delete_all" onclick="return confirm('Are you sure you want to delete all items?');" class="bg-red-50 hover:bg-red-100 text-red-600 text-sm font-semibold px-4 py-2.5 rounded-lg transition">
+                    Clear Directory
+                </a>
+                <a href="/logout" class="text-slate-500 hover:text-slate-800 text-sm font-medium ml-2">Logout</a>
+            </div>
+        </div>
+    </header>
 
-<table border="1">
-<tr>
-    <th>ID</th>
-    <th>Item Name</th>
-    <th>Description</th>
-    <th>Contact</th>
-    <th>Image</th>
-</tr>
+    <main class="max-w-6xl mx-auto px-4 py-10">
+        <h2 class="text-2xl font-bold text-slate-800 mb-6">Recent Item Submissions</h2>
 
-{% for item in items %}
-<tr>
-    <td>{{ item[0] }}</td>
-    <td>{{ item[1] }}</td>
-    <td>{{ item[2] }}</td>
-    <td>{{ item[3] }}</td>
-    <td>
-        {% if item[4] %}
-            <img src="{{ url_for('uploaded_file', filename=item[4]) }}" width="120">
-            {% else %}
-            <p>no items available</p>
+        {% if not items %}
+        <div class="bg-white border border-dashed border-slate-300 rounded-2xl p-12 text-center max-w-md mx-auto mt-10">
+            <span class="text-4xl block mb-3">📦</span>
+            <p class="text-slate-800 font-bold text-lg">No Items Reported Yet</p>
+            <p class="text-slate-500 text-sm mt-1 mb-5">Be the first to submit a matching claim to test the database.</p>
+            <a href="/add_item" class="text-indigo-600 font-bold hover:underline text-sm">+ Post Now</a>
+        </div>
+        {% else %}
+        
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for item in items %}
+            <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
+                <div>
+                    {% if item[4] %}
+                    <img src="/uploads/{{ item[4] }}" alt="Item Image" class="w-full h-48 object-cover">
+                    {% else %}
+                    <div class="w-full h-48 bg-slate-100 flex items-center justify-center text-slate-400">
+                        <span class="text-sm font-medium">📷 No Image Provided</span>
+                    </div>
+                    {% endif %}
+
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-slate-900 line-clamp-1 mb-1">{{ item[1] }}</h3>
+                        <p class="text-xs font-semibold text-indigo-600 tracking-wide uppercase mb-3">Reporter: {{ item[5] }}</p>
+                        <p class="text-sm text-slate-600 line-clamp-3 leading-relaxed">{{ item[2] }}</p>
+                    </div>
+                </div>
+
+                <div class="p-5 pt-0 mt-auto">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <span class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider">Contact Details</span>
+                        <span class="text-sm font-medium text-slate-800 line-clamp-1 mt-0.5">{{ item[3] }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
         {% endif %}
-    </td>
-</tr>
-{% endfor %}
-<a href="/add_item">
-<button type="button">add new item</button></a>
-</table>
+    </main>
 
 </body>
 </html>
