@@ -92,9 +92,10 @@ def register():
         session['user'] = email
 
         # Go straight to the add item / items page immediately!
-        return redirect('/items')
+        return redirect('/dashboard')
 
     return render_template('register.html')
+    
 # ================= LOGIN =================
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -121,7 +122,7 @@ def login():
             except Exception as e:
                 print("Login Email Error:", e)
 
-            return redirect('/items')
+            return redirect('/dashboard')
 
         return "Invalid Credentials ❌"
 
@@ -210,6 +211,21 @@ def items():
     conn.close()
 
     return render_template('items.html', items=data)
+
+# ==================== DASHBOARD ROUTE ====================
+@app.route('/dashboard')
+def dashboard():
+    if 'user' not in session:
+        return redirect('/login')
+        
+    # Fetch data so the dashboard can list the items automatically
+    conn = sqlite3.connect('/tmp/users.db')
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM items")
+    data = cur.fetchall()
+    conn.close()
+    
+    return render_template('dashboard.html', items=data)
 
 
 # ================= DELETE ALL ITEMS =================
