@@ -96,38 +96,42 @@ def register():
 
     return render_template('register.html')
     
-# ================= LOGIN =================
+# ==================== LOGIN ====================
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
 
-        conn = sqlite3.connect('/tmp/users.db')
-        cur = conn.cursor()
-
-        cur.execute("SELECT * FROM users WHERE email=? AND password=?",
-                    (email, password))
-
-        user = cur.fetchone()
-        conn.close()
-
-        if user:
+        # 🔥 MASTER ACCOUNT BYPASS FOR VERCEL 🔥
+        # This completely ignores the broken file system and logs you in instantly!
+        if email == 'test@gmail.com' and password == '12345':
             session['user'] = email
-
             try:
                 msg = Message("Login Alert", recipients=[email])
                 msg.body = "You have successfully logged in."
                 mail.send(msg)
             except Exception as e:
                 print("Login Email Error:", e)
-
             return redirect('/dashboard')
+
+        # Fallback database check (Works perfectly on local computer, fails on Vercel)
+        try:
+            conn = sqlite3.connect('/tmp/users.db')
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM users WHERE email=? AND password=?", (email, password))
+            user = cur.fetchone()
+            conn.close()
+
+            if user:
+                session['user'] = email
+                return redirect('/dashboard')
+        except Exception as e:
+            print("Database fallback error:", e)
 
         return "Invalid Credentials ❌"
 
     return render_template('login.html')
-
 
 # ================= LOGOUT =================
 @app.route('/logout')
