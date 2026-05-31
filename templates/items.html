@@ -8,62 +8,54 @@
 </head>
 <body class="bg-slate-50 min-h-screen font-sans">
 
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-xs">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+    <!-- Navigation Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
             <h1 class="text-xl font-extrabold text-slate-900">🔍 Lost & Found Panel</h1>
-            <div class="flex items-center gap-3">
-                <a href="/add_item" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm px-4 py-2.5 rounded-lg transition shadow-xs">
-                    + Add New Item
+            <div class="flex items-center gap-4">
+                <!-- Button to open the separate ADD page -->
+                <a href="/add_item" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm px-4 py-2.5 rounded-lg transition">
+                    + Report New Item
                 </a>
-                <a href="/delete_all" onclick="return confirm('Are you sure you want to delete all items?');" class="bg-red-50 hover:bg-red-100 text-red-600 text-sm font-semibold px-4 py-2.5 rounded-lg transition">
-                    Clear Directory
-                </a>
-                <a href="/logout" class="text-slate-500 hover:text-slate-800 text-sm font-medium ml-2">Logout</a>
+                <a href="/logout" class="text-slate-500 hover:text-slate-800 text-sm font-medium">Logout</a>
             </div>
         </div>
     </header>
 
+    <!-- Main Content Area -->
     <main class="max-w-6xl mx-auto px-4 py-10">
         <h2 class="text-2xl font-bold text-slate-800 mb-6">Recent Item Submissions</h2>
 
+        <!-- If there are no items in the database yet, show this screen -->
         {% if not items %}
         <div class="bg-white border border-dashed border-slate-300 rounded-2xl p-12 text-center max-w-md mx-auto mt-10">
             <span class="text-4xl block mb-3">📦</span>
-            <p class="text-slate-800 font-bold text-lg">No Items Reported Yet</p>
-            <p class="text-slate-500 text-sm mt-1 mb-5">Be the first to submit a matching claim to test the database.</p>
-            <a href="/add_item" class="text-indigo-600 font-bold hover:underline text-sm">+ Post Now</a>
+            <p class="text-slate-800 font-bold text-lg">No Items Found</p>
+            <p class="text-slate-500 text-sm mt-1 mb-5">The database is currently empty because the server just restarted.</p>
+            <a href="/add_item" class="bg-indigo-50 text-indigo-700 font-bold px-4 py-2 rounded-lg text-sm inline-block hover:bg-indigo-100 transition">
+                Click here to add the first item!
+            </a>
         </div>
-        {% else %}
         
+        <!-- If items exist, they will show up here as separate cards -->
+        {% else %}
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for item in items %}
-            <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
-                <div>
-                    {% if item[4] %}
-                    <img src="/uploads/{{ item[4] }}" alt="Item Image" class="w-full h-48 object-cover">
-                    {% else %}
-                    <div class="w-full h-48 bg-slate-100 flex items-center justify-center text-slate-400">
-                        <span class="text-sm font-medium">📷 No Image Provided</span>
-                    </div>
-                    {% endif %}
-
-                    <div class="p-5">
-                        <h3 class="text-lg font-bold text-slate-900 line-clamp-1 mb-1">{{ item[1] }}</h3>
-                        <p class="text-xs font-semibold text-indigo-600 tracking-wide uppercase mb-3">Reporter: {{ item[5] }}</p>
-                        <p class="text-sm text-slate-600 line-clamp-3 leading-relaxed">{{ item[2] }}</p>
-                    </div>
+            <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between">
+                <div class="p-5">
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">{{ item[1] }}</h3>
+                    <p class="text-xs font-semibold text-indigo-600 uppercase mb-3">Posted by: {{ item[5] }}</p>
+                    <p class="text-sm text-slate-600 leading-relaxed">{{ item[2] }}</p>
                 </div>
-
-                <div class="p-5 pt-0 mt-auto">
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider">Contact Details</span>
-                        <span class="text-sm font-medium text-slate-800 line-clamp-1 mt-0.5">{{ item[3] }}</span>
+                <div class="p-5 pt-0">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-sm text-slate-800">
+                        <span class="block text-[10px] text-slate-400 font-bold uppercase">Contact info</span>
+                        {{ item[3] }}
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-        
         {% endif %}
     </main>
 
