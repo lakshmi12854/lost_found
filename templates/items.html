@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>All Items</title>
+</head>
+<body>
+
+<h2>Lost Items List</h2>
+
+<table border="1">
+<tr>
+    <th>ID</th>
+    <th>Item Name</th>
+    <th>Description</th>
+    <th>Contact</th>
+    <th>Image</th>
+</tr>
+
+{% for item in items %}
+<tr>
+    <td>{{ item[0] }}</td>
+    <td>{{ item[1] }}</td>
+    <td>{{ item[2] }}</td>
+    <td>{{ item[3] }}</td>
+    <td>
+        {% if item[4] %}
+            <img src="{{ url_for('uploaded_file', filename=item[4]) }}" width="120">
+            {% else %}
+            <p>no items available</p>
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+<a href="/add_item">
+<button type="button">add new item</button></a>
+</table>
+
+</body>
+</html>
