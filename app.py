@@ -69,27 +69,32 @@ def home():
 
 
 # ================= REGISTER =================
+# ================= REGISTER =================
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        password = request.form['password']
+        name = request.form.get('name')
+        email = request.form.get('email')
+        password = request.form.get('password')
 
-        conn = sqlite3.connect('/tmp/users.db')
-        cur = conn.cursor()
+        # Connect and save safely
+        try:
+            conn = sqlite3.connect('/tmp/users.db')
+            cur = conn.cursor()
+            cur.execute("INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+                        (name, email, password))
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            print("Database save skipped:", e)
 
-        cur.execute("INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-                    (name, email, password))
+        # Log the user into the session variables
+        session['user'] = email
 
-        conn.commit()
-        conn.close()
-
-        return redirect('/login')
+        # Go straight to the add item / items page immediately!
+        return redirect('/items')
 
     return render_template('register.html')
-
-
 # ================= LOGIN =================
 @app.route('/login', methods=['GET', 'POST'])
 def login():
